@@ -252,6 +252,15 @@
       margin-bottom: 0.5rem;
     }
     .rider-note { font-size: 0.8rem; color: var(--gray); }
+    .rider-field {
+      font-size: 0.8rem;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+    .rider-field-label {
+      color: var(--gray);
+      font-weight: 600;
+    }
     .rider-strava {
       display: inline-block;
       margin-top: 0.6rem;
@@ -680,15 +689,20 @@
   function renderRoster(riders) {
     const grid = document.getElementById('roster-grid');
     const cards = riders.map(r => {
-      const discipline = r['favorite discipline'] || '';
       const hometown   = r['hometown'] || '';
+      const discipline = r['favorite discipline'] || '';
+      const color      = r['favorite color'] || '';
       const strava     = r['strava link'] || '';
+      const fields = [
+        hometown   ? `<div class="rider-field"><span class="rider-field-label">Hometown:</span> ${hometown}</div>`   : '',
+        discipline ? `<div class="rider-field"><span class="rider-field-label">Favorite Discipline:</span> ${discipline}</div>` : '',
+        color      ? `<div class="rider-field"><span class="rider-field-label">Favorite Color:</span> ${color}</div>` : '',
+      ].join('');
       return `
       <div class="rider-card">
         <div class="rider-avatar">${avatarHTML(r)}</div>
         <div class="rider-name">${r['name']}</div>
-        <div class="rider-role">${discipline}</div>
-        <div class="rider-note">${hometown}</div>
+        ${fields}
         ${strava ? `<a class="rider-strava" href="${strava}" target="_blank" rel="noopener">View on Strava →</a>` : ''}
       </div>`;
     }).join('');
