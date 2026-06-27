@@ -511,9 +511,6 @@
       <p class="data-loading">Loading roster…</p>
     </div>
 
-    <p class="roster-footer">
-      Want to join Team Fun? <a href="mailto:teamfun@example.com">Reach out &rarr;</a>
-    </p>
   </div>
 </section>
 
@@ -601,13 +598,6 @@
       </a>
     </div>
 
-    <div style="display:flex;justify-content:center;">
-      <div class="sponsor-cta-box">
-        <h3>Interested in supporting Team Fun?</h3>
-        <p>We're a scrappy Phoenix cycling club with big ambitions. Sponsorship goes toward race entry fees, kit, and community events.</p>
-        <a href="mailto:teamfun@example.com" class="btn btn-outline-magenta">Get In Touch</a>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -702,11 +692,7 @@
         ${strava ? `<a class="rider-strava" href="${strava}" target="_blank" rel="noopener">View on Strava →</a>` : ''}
       </div>`;
     }).join('');
-    grid.innerHTML = cards + `
-      <div class="rider-card placeholder">
-        <div class="plus">+</div>
-        <div>Add a Rider</div>
-      </div>`;
+    grid.innerHTML = cards;
   }
 
   // ── Races ────────────────────────────────────────────────────────
