@@ -622,7 +622,7 @@
   // ══════════════════════════════════════════════════════════════════
   const SHEET_BASE      = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQScQtQQUrSTR2amG-CquSqVnw5aJZysXukmXGvXYqYbHUCvNE9GOCqqln6TLHX4rVtZXXHyjtvIAQ7/pub?output=csv';
   const ROSTER_CSV_URL  = SHEET_BASE + '&sheet=Roster';
-  const RACES_CSV_URL   = SHEET_BASE + '&sheet=Races';
+  const RACES_CSV_URL   = 'https://docs.google.com/spreadsheets/d/1x16EZRR6lxMlbnWyevJODlZj0MOnihmURl-aJvk-C2k/export?format=csv&gid=93329590';
   const SPONSORS_CSV_URL = ''; // leave empty to use hard-coded Rage Cycles
 
   // ══════════════════════════════════════════════════════════════════
@@ -714,28 +714,28 @@
     const list = document.getElementById('races-list');
     try {
       const text = await fetchCSV(RACES_CSV_URL);
-      const data = csvToObjects(text);
-      renderRaces(data);
+      // skip header row (row 1), read data by column position
+      const rows = parseCSV(text).filter(r => r.some(c => c)).slice(1);
+      renderRaces(rows);
     } catch (e) {
       list.innerHTML = `<p class="data-error">Couldn't load race calendar. (${e.message})</p>`;
     }
   }
 
-  function renderRaces(races) {
+  function renderRaces(rows) {
     const list = document.getElementById('races-list');
-    if (!races.length) { list.innerHTML = '<p class="data-loading">No races scheduled yet.</p>'; return; }
-    list.innerHTML = races.map(r => {
-      const name         = r['race name'] || '';
-      const date         = r['date'] || '';
-      const link         = r['link'] || '#';
-      const participants = r['fun participants'] || '';
-      const meta         = participants ? `Team Fun: ${participants}` : '';
+    if (!rows.length) { list.innerHTML = '<p class="data-loading">No races scheduled yet.</p>'; return; }
+    list.innerHTML = rows.map(r => {
+      const name         = r[0] || '';
+      const date         = r[1] || '';
+      const link         = r[2] || '#';
+      const participants = r[3] || '';
       return `
       <div class="event-row">
         <span class="event-date">${date}</span>
         <div class="event-body">
           <a class="event-name" href="${link}" target="_blank" rel="noopener">${name}</a>
-          ${meta ? `<span class="event-meta">${meta}</span>` : ''}
+          ${participants ? `<span class="event-meta">Team Fun: ${participants}</span>` : ''}
         </div>
         <span class="tag tag-race">Race</span>
       </div>`;
